@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>店家搜尋</title>
+    <style>
+        /* 基本的頁面樣式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filters select, .filters button {
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .store-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .store-item {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .store-item a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .store-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>店家搜尋</h1>
+        <!-- 篩選條件區域 -->
+        <div class="filters">
+            <!-- 評分篩選 -->
+            <select id="rating">
+                <option value="1">1星</option>
+                <option value="2">2星</option>
+                <option value="3">3星</option>
+                <option value="4">4星</option>
+                <option value="5">5星</option>
+            </select>
+
+            <!-- 價格篩選 -->
+            <select id="price">
+                <option value="50">50元內</option>
+                <option value="100">50~100元</option>
+                <option value="200">100~200元</option>
+                <option value="300">200~300元</option>
+                <option value="400">300~400元</option>
+            </select>
+
+            <!-- 距離篩選 -->
+            <select id="distance">
+                <option value="100">100公尺內</option>
+                <option value="200">100~200公尺</option>
+                <option value="300">200~300公尺</option>
+                <option value="400">300~400公尺</option>
+                <option value="500">400~500公尺</option>
+            </select>
+
+            <button onclick="searchStores()">尋找店家</button>
+        </div>
+
+        <!-- 店家列表 -->
+        <ul id="store-list" class="store-list">
+            <!-- 店家項目將會在這裡顯示 -->
+        </ul>
+    </div>
+
+    <script>
+        // 模擬店家資料
+        const stores = [
+            { name: "店家A", lat: 25.0330, lng: 121.5654, rating: 4, price: 80, distance: 150 },
+            { name: "店家B", lat: 25.0380, lng: 121.5630, rating: 5, price: 120, distance: 250 },
+            { name: "店家C", lat: 25.0400, lng: 121.5700, rating: 3, price: 60, distance: 100 },
+            { name: "店家D", lat: 25.0430, lng: 121.5720, rating: 2, price: 200, distance: 400 },
+            { name: "店家E", lat: 25.0320, lng: 121.5610, rating: 5, price: 150, distance: 300 },
+        ];
+
+        // 搜尋店家並過濾
+        function searchStores() {
+            const rating = document.getElementById("rating").value;
+            const price = document.getElementById("price").value;
+            const distance = document.getElementById("distance").value;
+
+            // 篩選店家
+            const filteredStores = stores.filter(store => 
+                store.rating >= rating && store.price <= price && store.distance <= distance
+            );
+
+            // 顯示篩選後的店家列表
+            const storeListContainer = document.getElementById("store-list");
+            storeListContainer.innerHTML = "";  // 清空之前的結果
+
+            filteredStores.forEach(store => {
+                const storeElement = document.createElement("li");
+                storeElement.classList.add("store-item");
+                storeElement.innerHTML = `
+                    <h3><a href="https://www.google.com/maps?q=${store.lat},${store.lng}" target="_blank">${store.name}</a></h3>
+                    <p>距離: ${store.distance} 公尺</p>
+                    <p>評分: ${store.rating} 顆星</p>
+                    <p>價格: ${store.price} 元</p>
+                `;
+                storeListContainer.appendChild(storeElement);
+            });
+        }
+    </script>
+
+</body>
+</html>
